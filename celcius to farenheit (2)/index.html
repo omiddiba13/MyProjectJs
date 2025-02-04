@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temperature Converter</title>
+    <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 95%;
+        transform: translateY(0);
+        opacity: 1;
+        animation: fadeIn 0.8s ease-out, slideUp 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+        font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      #Temp {
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        width: 70%;
+        outline: none;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      #Temp:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        transform: scale(1.02);
+      }
+
+      #checkS {
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      #checkS:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+      }
+
+      #checkS:active {
+        transform: translateY(1px);
+      }
+
+      #checkS::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: 0.5s;
+      }
+
+      #checkS:hover::before {
+        left: 100%;
+      }
+
+      .unit-switch {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: -300px;
+        background: #e74c3c;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      .notification.show {
+        right: 20px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 1.5rem;
+          border-radius: 15px;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .input-group {
+          flex-direction: column;
+        }
+
+        #Temp {
+          width: 100%;
+          font-size: 1rem;
+        }
+
+        #checkS {
+          width: 100%;
+          font-size: 1rem;
+          padding: 0.8rem;
+        }
+      }
+
+      .weather-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+      }
+
+      .weather-icon.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="weather-icon">🌡️</div>
+      <h1>Temperature Converter</h1>
+      <div class="input-group">
+        <input
+          type="number"
+          id="Temp"
+          placeholder="Enter temperature"
+          step="0.1" />
+        <button onclick="check()" id="checkS">
+          <span class="unit-switch">C</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+      const check = () => {
+        const checkValue = document.getElementById("checkS");
+        const unitSwitch = document.querySelector(".unit-switch");
+        const tempInput = document.getElementById("Temp");
+        const notification = document.getElementById("notification");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        let tempValue = parseFloat(tempInput.value);
+
+        // Show error notification
+        const showError = (message) => {
+          notification.textContent = message;
+          notification.classList.add("show");
+          setTimeout(() => {
+            notification.classList.remove("show");
+          }, 3000);
+        };
+
+        if (isNaN(tempValue)) {
+          showError("🌡️ Please enter a valid temperature!");
+          tempInput.focus();
+          return;
+        }
+
+        // Animate button and conversion
+        checkValue.style.transform = "scale(0.95)";
+        setTimeout(() => {
+          checkValue.style.transform = "scale(1)";
+        }, 200);
+
+        // Animate weather icon
+        weatherIcon.classList.add("show");
+
+        if (unitSwitch.textContent === "C") {
+          tempValue = (tempValue * 9) / 5 + 32;
+          unitSwitch.textContent = "F";
+          document.body.style.background =
+            "linear-gradient(135deg, #ff9966, #ff5e62)";
+        } else {
+          tempValue = ((tempValue - 32) * 5) / 9;
+          unitSwitch.textContent = "C";
+          document.body.style.background =
+            "linear-gradient(135deg, #00d2ff, #3a7bd5)";
+        }
+
+        tempInput.value = tempValue.toFixed(2);
+
+        // Input field animation
+        tempInput.style.transform = "scale(1.05)";
+        setTimeout(() => {
+          tempInput.style.transform = "scale(1)";
+        }, 200);
+      };
+
+      // Initialize weather icon animation
+      setTimeout(() => {
+        document.querySelector(".weather-icon").classList.add("show");
+      }, 500);
+    </script>
+  </body>
+</html>

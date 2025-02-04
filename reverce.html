@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reverse Text</title>
+  </head>
+  <body>
+    <div>
+      <input type="text" id="yourText" />
+      <button onclick="reverseText()">Submit</button>
+      <p id="reversId"></p>
+    </div>
+  </body>
+  <script>
+    const reverseText = () => {
+      // گرفتن مقدار ورودی
+      const text = document.getElementById("yourText").value;
+
+      // معکوس کردن رشته
+      const reversedText = text.split("").reverse().join("");
+
+      // نمایش رشته معکوس‌شده در <p>
+      document.getElementById("reversId").innerText = reversedText;
+    };
+  </script>
+</html>

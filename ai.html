@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دیپ سیک - هوش مصنوعی</title>
+    <style>
+      :root {
+        --primary: #2b313e;
+        --secondary: #3b82f6;
+        --bg: #1a1d24;
+        --text: #f8fafc;
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        height: 90vh;
+        gap: 15px;
+      }
+
+      .header {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        border-radius: 15px;
+      }
+
+      .chat-container {
+        flex-grow: 1;
+        background: var(--primary);
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .message {
+        margin: 0;
+        padding: 15px;
+        border-radius: 10px;
+        max-width: 85%;
+        animation: fadeIn 0.3s ease-in;
+        position: relative;
+      }
+
+      .user-message {
+        background: var(--secondary);
+        margin-left: auto;
+      }
+
+      .ai-message {
+        background: var(--primary);
+        border: 1px solid #374151;
+        margin-right: auto;
+      }
+
+      .typing-indicator {
+        display: inline-flex;
+        gap: 5px;
+        padding: 10px;
+        background: var(--primary);
+        border-radius: 20px;
+      }
+
+      .typing-dot {
+        width: 7px;
+        height: 7px;
+        background: #94a3b8;
+        border-radius: 50%;
+        animation: typing 1.4s infinite ease-in-out;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .input-container {
+        display: flex;
+        gap: 10px;
+        position: relative;
+      }
+
+      input {
+        flex-grow: 1;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 25px;
+        background: var(--primary);
+        color: var(--text);
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      input:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--secondary);
+      }
+
+      button {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        background: var(--secondary);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+      }
+
+      button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      button:hover:not(:disabled) {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      .timestamp {
+        font-size: 0.75em;
+        color: #94a3b8;
+        margin-top: 8px;
+        text-align: left;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes typing {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-4px);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          height: 95vh;
+          padding: 10px;
+        }
+
+        .message {
+          max-width: 90%;
+        }
+
+        button {
+          padding: 12px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>دیپ سیک 1.5B 🤖</h1>
+        <p>هوش مصنوعی فارسی زبان</p>
+      </div>
+
+      <div class="chat-container" id="chatContainer">
+        <div class="message ai-message">
+          سلام! چطور میتونم به شما کمک کنم؟
+          <div class="timestamp">هم اکنون</div>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <input
+          type="text"
+          id="input"
+          placeholder="سوال خود را اینجا بنویسید..."
+          onkeypress="handleKeyPress(event)"
+          autocomplete="off" />
+        <button id="sendButton" onclick="generate()">ارسال</button>
+        <div class="typing-indicator" id="typingIndicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let isGenerating = false;
+      let currentAiMessage = null;
+
+      async function generate() {
+        if (isGenerating) return;
+
+        const input = document.getElementById("input");
+        const chatContainer = document.getElementById("chatContainer");
+        const button = document.getElementById("sendButton");
+        const typingIndicator = document.getElementById("typingIndicator");
+
+        const prompt = input.value.trim();
+        if (!prompt) {
+          alert("لطفا پیام خود را وارد کنید!");
+          return;
+        }
+
+        try {
+          isGenerating = true;
+          input.disabled = true;
+          button.disabled = true;
+          typingIndicator.style.display = "flex";
+
+          // Add user message
+          addMessage(prompt, "user");
+          input.value = "";
+
+          // Create initial AI message
+          currentAiMessage = addMessage("", "ai", true);
+
+          const response = await fetch("http://localhost:11434/api/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "deepseek-r1:8b",
+              prompt: prompt,
+              stream: true,
+              temperature: 0.7,
+            }),
+          });
+
+          if (!response.ok) throw new Error("خطا در ارتباط با سرور");
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let aiResponse = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const parsedChunk = JSON.parse(chunk);
+            aiResponse += parsedChunk.response || "";
+
+            // Update message content
+            currentAiMessage.querySelector(".content").innerHTML =
+              formatResponse(aiResponse);
+
+            // Auto-scroll
+            currentAiMessage.scrollIntoView({ behavior: "smooth" });
+          }
+
+          // Add final timestamp
+          currentAiMessage.querySelector(".timestamp").textContent =
+            new Date().toLocaleTimeString("fa-IR");
+        } catch (error) {
+          addMessage(`خطا: ${error.message}`, "error");
+        } finally {
+          isGenerating = false;
+          input.disabled = false;
+          button.disabled = false;
+          typingIndicator.style.display = "none";
+          currentAiMessage = null;
+        }
+      }
+
+      function addMessage(text, type, isStreaming = false) {
+        const chatContainer = document.getElementById("chatContainer");
+        const messageDiv = document.createElement("div");
+
+        messageDiv.className = `message ${type}-message`;
+        messageDiv.innerHTML = `
+                <div class="content">${formatResponse(text)}</div>
+                <div class="timestamp">${
+                  isStreaming
+                    ? "در حال نوشتن..."
+                    : new Date().toLocaleTimeString("fa-IR")
+                }</div>
+            `;
+
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        return messageDiv;
+      }
+
+      function formatResponse(text) {
+        // Simple formatting for new lines
+        return text.replace(/\n/g, "<br>");
+      }
+
+      function handleKeyPress(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          generate();
+        }
+      }
+
+      // Hide typing indicator initially
+      document.getElementById("typingIndicator").style.display = "none";
+    </script>
+  </body>
+</html>

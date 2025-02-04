@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>calculator</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #f0f2f5;
+      }
+
+      .calculator {
+        background: #2d2d2d;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .calculator:hover {
+        transform: translateY(-5px);
+      }
+
+      .display {
+        background: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      #result {
+        color: #fff;
+        font-size: 2.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      button {
+        border: none;
+        background: #3d3d3d;
+        color: white;
+        padding: 20px;
+        font-size: 1.2em;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      button:hover {
+        background: #4d4d4d;
+        transform: scale(1.05);
+      }
+
+      button:active {
+        transform: scale(0.95);
+      }
+
+      .operator {
+        background: #ff9500;
+      }
+
+      .operator:hover {
+        background: #ffaa33;
+      }
+
+      .equals {
+        background: #007aff;
+      }
+
+      .equals:hover {
+        background: #0066cc;
+      }
+
+      @media (max-width: 480px) {
+        button {
+          padding: 15px;
+          font-size: 1em;
+        }
+
+        #result {
+          font-size: 2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="display">
+        <div id="result">0</div>
+      </div>
+      <div class="buttons">
+        <button class="operator">AC</button>
+        <button class="operator">±</button>
+        <button class="operator">%</button>
+        <button class="operator">÷</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="operator">×</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="operator">−</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="operator">+</button>
+        <button>0</button>
+        <button>.</button>
+        <button class="equals" style="grid-column: span 2">=</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const result = document.getElementById("result");
+    const buttons = document.querySelectorAll("button");
+
+    let currentNumber = "0"; // عددی که نمایش داده می‌شود
+    let firstNumber = null; // عدد اول برای محاسبه
+    let operator = null; // عملگر ذخیره شده
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.textContent;
+
+        if (!isNaN(value) || value === ".") {
+          handleNumber(value);
+        }
+        if (value === "AC") {
+          currentNumber = "0";
+          firstNumber = null;
+          operator = null;
+        }
+        if (["+", "−", "×", "÷"].includes(value)) {
+          operator = value;
+          firstNumber = currentNumber;
+          currentNumber = " ";
+        }
+        if (value === "=") {
+          if (operator && firstNumber) {
+            currentNumber = calculate(
+              parseFloat(firstNumber),
+              parseFloat(currentNumber),
+              operator,
+            );
+            operator = null;
+            firstNumber = null;
+          }
+        }
+        result.textContent = currentNumber;
+      });
+    });
+
+    function handleNumber(num) {
+      if (currentNumber === "0") {
+        currentNumber = num;
+      } else {
+        currentNumber += num;
+      }
+    }
+    function calculate(a, b, op) {
+      switch (op) {
+        case "+":
+          return a + b;
+        case "−":
+          return a - b;
+        case "×":
+          return a * b;
+        case "÷":
+          return b !== 0 ? a / b : "Error";
+        default:
+          return b;
+      }
+    }
+  </script>
+</html>

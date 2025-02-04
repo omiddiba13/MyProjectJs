@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Library</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f4f6;
+        margin: 20px;
+      }
+      #library-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .book-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #e2e8f0;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="library-container">
+      <h1>Online Library</h1>
+      <form id="bookForm">
+        <input type="text" id="bookName" placeholder="Book Name" required />
+        <input type="text" id="author" placeholder="Author" required />
+        <select id="status">
+          <option value="unread">Unread</option>
+          <option value="read">Read</option>
+        </select>
+        <button type="submit">Add Book</button>
+      </form>
+      <input type="text" id="searchBox" placeholder="Search books..." />
+      <ul id="bookList"></ul>
+    </div>
+    <script>
+      let books = JSON.parse(localStorage.getItem("books")) || [];
+
+      // انتخاب عناصر
+      const bookForm = document.getElementById("bookForm");
+      const bookNameInput = document.getElementById("bookName");
+      const authorInput = document.getElementById("author");
+      const statusInput = document.getElementById("status");
+      const bookList = document.getElementById("bookList");
+      const searchBox = document.getElementById("searchBox");
+
+      // ذخیره در لوکال استوریج
+      const saveToLocalStorage = () => {
+        localStorage.setItem("books", JSON.stringify(books));
+      };
+
+      // نمایش کتاب‌ها
+      const displayBooks = (filter = "") => {
+        bookList.innerHTML = "";
+        books
+          .filter((book) =>
+            book.name.toLowerCase().includes(filter.toLowerCase()),
+          )
+          .forEach((book, index) => {
+            const li = document.createElement("li");
+            li.className = "book-item";
+            li.innerHTML = `
+        <span>${book.name} by ${book.author} (${book.status})</span>
+        <div>
+          <button onclick="editBook(${index})">Edit</button>
+          <button onclick="deleteBook(${index})">Delete</button>
+        </div>
+      `;
+            bookList.appendChild(li);
+          });
+      };
+
+      // افزودن کتاب جدید
+      bookForm.onsubmit = (e) => {
+        e.preventDefault();
+        const newBook = {
+          name: bookNameInput.value.trim(),
+          author: authorInput.value.trim(),
+          status: statusInput.value,
+        };
+        books.push(newBook);
+        saveToLocalStorage();
+        displayBooks();
+        bookForm.reset();
+      };
+
+      // حذف کتاب
+      const deleteBook = (index) => {
+        books.splice(index, 1);
+        saveToLocalStorage();
+        displayBooks();
+      };
+
+      // ویرایش کتاب
+      const editBook = (index) => {
+        const book = books[index];
+        bookNameInput.value = book.name;
+        authorInput.value = book.author;
+        statusInput.value = book.status;
+        deleteBook(index);
+      };
+
+      // جستجوی کتاب‌ها
+      searchBox.oninput = (e) => {
+        displayBooks(e.target.value);
+      };
+
+      // نمایش اولیه
+      displayBooks();
+    </script>
+  </body>
+</html>

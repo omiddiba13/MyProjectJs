@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ماشین حساب ساده</title>
+    <style>
+      /* استایل‌های ساده برای ظاهر ماشین حساب */
+      .calculator {
+        width: 300px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      #display {
+        width: 100%;
+        padding: 10px;
+        font-size: 20px;
+        text-align: right;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
+      button {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <input type="text" id="display" disabled />
+      <div class="buttons">
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="setOperator('+')">+</button><br />
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="setOperator('-')">-</button><br />
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="setOperator('*')">*</button><br />
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="setOperator('/')">/</button><br />
+        <button onclick="clearDisplay()">C</button>
+      </div>
+    </div>
+
+    <script>
+      let display = document.getElementById("display");
+      let currentInput = "";
+      let operator = "";
+      let previousInput = "";
+
+      function appendToDisplay(value) {
+        currentInput += value;
+        display.value = currentInput;
+      }
+
+      function setOperator(op) {
+        if (currentInput === "") return; // اگر ورودی فعلی خالی باشد، هیچ کاری انجام نده
+        operator = op;
+        previousInput = currentInput;
+        currentInput = "";
+      }
+
+      function calculate() {
+        let result;
+        const num1 = parseFloat(previousInput);
+        const num2 = parseFloat(currentInput);
+
+        if (isNaN(num1) || isNaN(num2)) {
+          display.value = "Error";
+          return;
+        }
+
+        switch (operator) {
+          case "+":
+            result = num1 + num2;
+            break;
+          case "-":
+            result = num1 - num2;
+            break;
+          case "*":
+            result = num1 * num2;
+            break;
+          case "/":
+            if (num2 === 0) {
+              display.value = "Division by zero";
+              return;
+            }
+            result = num1 / num2;
+            break;
+          default:
+            return;
+        }
+
+        display.value = result;
+        currentInput = result.toString();
+        operator = "";
+        previousInput = "";
+      }
+
+      function clearDisplay() {
+        display.value = "";
+        currentInput = "";
+        operator = "";
+        previousInput = "";
+      }
+    </script>
+  </body>
+</html>

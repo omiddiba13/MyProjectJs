@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div class="calculator">
+      <input type="text" id="display" disabled />
+      <div class="buttons">
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="setOperator('+')">+</button><br />
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="setOperator('-')">-</button><br />
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="setOperator('*')">*</button><br />
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="setOperator('/')">/</button><br />
+        <button onclick="clearDisplay()">C</button>
+      </div>
+    </div>
+    <script>
+      let display = document.getElementById("display");
+      let numOne = "";
+      let numTwo = "";
+      let operator = "";
+
+      let appendToDisplay = (value) => {
+        numOne += value;
+        display.value = numOne;
+      };
+
+      let setOperator = (op) => {
+        if (numOne === "") {
+          return;
+        }
+        operator = op;
+        numTwo = numOne;
+        numOne = "";
+      };
+
+      let calculate = () => {
+        let result;
+        const num1 = parseFloat(numOne);
+        const num2 = parseFloat(numTwo);
+        if (isNaN(num1) || isNaN(num2)) {
+          display.value = "error";
+          return;
+        }
+        switch (operator) {
+          case "+":
+            result = num2 + num1;
+            break;
+          case "-":
+            result = num2 - num1; // اصلاح شد
+            break;
+          case "*":
+            result = num2 * num1;
+            break;
+          case "/":
+            if (num1 === 0) {
+              display.value = "Division by zero";
+              return;
+            }
+            result = num2 / num1;
+            break;
+          default:
+            display.value = "error";
+            return;
+        }
+        display.value = result;
+        numOne = result.toString();
+        operator = "";
+        numTwo = "";
+      };
+
+      let clearDisplay = () => {
+        display.value = "";
+        numOne = "";
+        numTwo = "";
+        operator = "";
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guessing Game</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+      }
+
+      .game-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        transform: scale(1);
+        transition: transform 0.3s ease;
+      }
+
+      .game-container:hover {
+        transform: scale(1.02);
+      }
+
+      h1 {
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+      }
+
+      .input-group {
+        margin: 2rem 0;
+        position: relative;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      }
+
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+
+      button:hover {
+        background: #764ba2;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      #result {
+        margin-top: 1.5rem;
+        font-size: 1.2rem;
+        min-height: 2rem;
+      }
+
+      .attempts {
+        margin: 1rem 0;
+        font-size: 0.9rem;
+        color: #4a5568;
+      }
+
+      .shake {
+        animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      }
+
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translateX(-1px);
+        }
+        20%,
+        80% {
+          transform: translateX(2px);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translateX(-4px);
+        }
+        40%,
+        60% {
+          transform: translateX(4px);
+        }
+      }
+
+      .celebrate {
+        animation: celebrate 0.5s ease;
+      }
+
+      @keyframes celebrate {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .game-container {
+          padding: 1.5rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        button {
+          width: 100%;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <h1>Guess the Number 🎯</h1>
+      <div class="attempts" id="attempts">Attempts remaining: 3</div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="yourGuess"
+          min="1"
+          max="10"
+          placeholder="Enter 1-10"
+          required />
+      </div>
+      <button onclick="guess()">Check My Guess</button>
+      <p id="result"></p>
+    </div>
+
+    <script>
+      let attempts = 3;
+      let randomNumber = generateRandomNumber();
+
+      function generateRandomNumber() {
+        return Math.floor(Math.random() * 10) + 1;
+      }
+
+      function updateAttempts() {
+        const attemptsElement = document.getElementById("attempts");
+        attemptsElement.textContent = `Attempts remaining: ${attempts}`;
+
+        if (attempts === 0) {
+          document.getElementById("yourGuess").disabled = true;
+          document.querySelector("button").disabled = true;
+          showResult(`Game Over! The number was ${randomNumber}`, "red");
+        }
+      }
+
+      function showResult(message, color) {
+        const resultElement = document.getElementById("result");
+        resultElement.style.color = color;
+        resultElement.innerHTML = message;
+        resultElement.classList.add(color === "green" ? "celebrate" : "shake");
+
+        setTimeout(() => {
+          resultElement.classList.remove("shake", "celebrate");
+        }, 500);
+      }
+
+      function guess() {
+        const yourGuessInput = document.getElementById("yourGuess");
+        const yourGuess = parseInt(yourGuessInput.value);
+        const gameContainer = document.querySelector(".game-container");
+
+        if (isNaN(yourGuess) || yourGuess < 1 || yourGuess > 10) {
+          showResult("Please enter a number between 1-10!", "red");
+          yourGuessInput.classList.add("shake");
+          setTimeout(() => yourGuessInput.classList.remove("shake"), 500);
+          return;
+        }
+
+        attempts--;
+        updateAttempts();
+
+        if (yourGuess === randomNumber) {
+          showResult("🎉 Correct! Well done!", "green");
+          gameContainer.classList.add("celebrate");
+          setTimeout(() => gameContainer.classList.remove("celebrate"), 500);
+          setTimeout(() => {
+            attempts = 3;
+            randomNumber = generateRandomNumber();
+            updateAttempts();
+            yourGuessInput.value = "";
+            showResult("", "");
+            yourGuessInput.disabled = false;
+            document.querySelector("button").disabled = false;
+          }, 2000);
+        } else {
+          showResult(`❌ Try again! (Was ${randomNumber})`, "red");
+          gameContainer.classList.add("shake");
+          setTimeout(() => gameContainer.classList.remove("shake"), 500);
+
+          if (attempts === 0) {
+            setTimeout(() => {
+              attempts = 3;
+              randomNumber = generateRandomNumber();
+              updateAttempts();
+              yourGuessInput.value = "";
+              showResult("", "");
+              yourGuessInput.disabled = false;
+              document.querySelector("button").disabled = false;
+            }, 2000);
+          }
+        }
+
+        yourGuessInput.value = "";
+        yourGuessInput.focus();
+      }
+
+      // Add keyboard support
+      document
+        .getElementById("yourGuess")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") guess();
+        });
+    </script>
+  </body>
+</html>
