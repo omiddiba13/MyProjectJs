@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Multiplication Table</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      input,
+      button {
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+      }
+      table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+      th {
+        background: #007bff;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dynamic Multiplication Table</h1>
+    <input type="number" id="size" placeholder="Enter table size" min="1" />
+    <button onclick="generateTable()">Generate</button>
+    <div id="table-container"></div>
+
+    <script>
+      function generateTable() {
+        let n = document.getElementById("size").value;
+        let container = document.getElementById("table-container");
+        container.innerHTML = ""; // Clear previous table
+
+        if (n < 1) return;
+
+        let table = document.createElement("table");
+        let thead = document.createElement("thead");
+        let tbody = document.createElement("tbody");
+
+        let headerRow = document.createElement("tr");
+        for (let i = 0; i <= n; i++) {
+          let th = document.createElement("th");
+          th.innerText = i === 0 ? "×" : i;
+          headerRow.appendChild(th);
+        }
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        for (let i = 1; i <= n; i++) {
+          let row = document.createElement("tr");
+          let rowHeader = document.createElement("th");
+          rowHeader.innerText = i;
+          row.appendChild(rowHeader);
+
+          for (let j = 1; j <= n; j++) {
+            let cell = document.createElement("td");
+            cell.innerText = i * j;
+            row.appendChild(cell);
+          }
+          tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        container.appendChild(table);
+      }
+    </script>
+  </body>
+</html>
