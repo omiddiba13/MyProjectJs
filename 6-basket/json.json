@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "name": "Classic Cotton T-Shirt",
+    "description": "A comfortable and versatile everyday t-shirt made from 100% premium cotton.",
+    "category": "Apparel",
+    "price": 25.0,
+    "image_url": "https://example.com/images/tshirt1.jpg",
+    "stock": 50,
+    "rating": 4.5,
+    "brand": "Generic Brand"
+  },
+  {
+    "id": 2,
+    "name": "Stainless Steel Water Bottle",
+    "description": "Durable and eco-friendly water bottle with double-walled insulation to keep drinks cold or hot.",
+    "category": "Accessories",
+    "price": 19.99,
+    "image_url": "https://example.com/images/waterbottle.jpg",
+    "stock": 100,
+    "rating": 4.8,
+    "brand": "HydrateWell"
+  },
+  {
+    "id": 3,
+    "name": "Wireless Bluetooth Headphones",
+    "description": "Noise-canceling headphones with high-fidelity audio and long battery life.",
+    "category": "Electronics",
+    "price": 79.99,
+    "image_url": "https://example.com/images/headphones.jpg",
+    "stock": 30,
+    "rating": 4.2,
+    "brand": "SoundWave"
+  },
+  {
+    "id": 4,
+    "name": "Organic Coffee Beans - Medium Roast",
+    "description": "Fair trade and organic coffee beans with a balanced flavor profile.",
+    "category": "Food & Beverage",
+    "price": 12.5,
+    "image_url": "https://example.com/images/coffeebeans.jpg",
+    "stock": 75,
+    "rating": 4.9,
+    "brand": "Bean There Brewed That"
+  },
+  {
+    "id": 5,
+    "name": "Yoga Mat - Extra Thick",
+    "description": "Non-slip and extra-thick yoga mat for comfort and support during practice.",
+    "category": "Sports & Outdoors",
+    "price": 34.99,
+    "image_url": "https://example.com/images/yogamat.jpg",
+    "stock": 40,
+    "rating": 4.7,
+    "brand": "ZenFlow"
+  },
+  {
+    "id": 6,
+    "name": "Leather Journal Notebook",
+    "description": "High-quality leather-bound journal with blank pages for writing and sketching.",
+    "category": "Stationery",
+    "price": 18.0,
+    "image_url": "https://example.com/images/journal.jpg",
+    "stock": 60,
+    "rating": 4.6,
+    "brand": "Ink & Page"
+  },
+  {
+    "id": 7,
+    "name": "Smartphone Stand - Adjustable",
+    "description": "Universal smartphone stand with adjustable height and angle.",
+    "category": "Electronics Accessories",
+    "price": 9.99,
+    "image_url": "https://example.com/images/phonestand.jpg",
+    "stock": 120,
+    "rating": 4.3,
+    "brand": "TechGear"
+  },
+  {
+    "id": 8,
+    "name": "Scented Candle - Lavender",
+    "description": "Relaxing lavender-scented candle made with natural soy wax.",
+    "category": "Home & Decor",
+    "price": 15.0,
+    "image_url": "https://example.com/images/candle.jpg",
+    "stock": 80,
+    "rating": 4.8,
+    "brand": "Cozy Home"
+  },
+  {
+    "id": 9,
+    "name": "Backpack - Water Resistant",
+    "description": "Durable and water-resistant backpack with multiple compartments.",
+    "category": "Bags & Luggage",
+    "price": 49.99,
+    "image_url": "https://example.com/images/backpack.jpg",
+    "stock": 25,
+    "rating": 4.4,
+    "brand": "Adventure Gear"
+  },
+  {
+    "id": 10,
+    "name": "Reusable Grocery Bags - Set of 5",
+    "description": "Eco-friendly reusable grocery bags made from durable and washable material.",
+    "category": "Home & Kitchen",
+    "price": 12.0,
+    "image_url": "https://example.com/images/grocerybags.jpg",
+    "stock": 150,
+    "rating": 4.9,
+    "brand": "Green Living"
+  },
+  {
+    "id": 11,
+    "name": "Men's Running Shoes",
+    "description": "Lightweight and breathable running shoes with excellent cushioning.",
+    "category": "Apparel",
+    "price": 89.95,
+    "image_url": "https://example.com/images/runningshoes.jpg",
+    "stock": 45,
+    "rating": 4.6,
+    "brand": "StrideRight"
+  },
+  {
+    "id": 12,
+    "name": "Portable Bluetooth Speaker",
+    "description": "Compact and powerful Bluetooth speaker with long battery life.",
+    "category": "Electronics",
+    "price": 39.99,
+    "image_url": "https://example.com/images/speaker.jpg",
+    "stock": 65,
+    "rating": 4.7,
+    "brand": "AudioBlast"
+  },
+  {
+    "id": 13,
+    "name": "Herbal Tea Sampler Pack",
+    "description": "Variety pack of organic herbal teas with different flavors.",
+    "category": "Food & Beverage",
+    "price": 16.5,
+    "image_url": "https://example.com/images/tea.jpg",
+    "stock": 90,
+    "rating": 4.8,
+    "brand": "Nature's Brew"
+  },
+  {
+    "id": 14,
+    "name": "Resistance Bands Set",
+    "description": "Set of resistance bands with varying levels of resistance for exercise.",
+    "category": "Sports & Outdoors",
+    "price": 22.0,
+    "image_url": "https://example.com/images/resistancebands.jpg",
+    "stock": 55,
+    "rating": 4.5,
+    "brand": "FitLife"
+  },
+  {
+    "id": 15,
+    "name": "Sketchbook - Hardcover",
+    "description": "Durable hardcover sketchbook with high-quality paper for drawing.",
+    "category": "Stationery",
+    "price": 14.0,
+    "image_url": "https://example.com/images/sketchbook.jpg",
+    "stock": 70,
+    "rating": 4.9,
+    "brand": "Artful Creations"
+  },
+  {
+    "id": 16,
+    "name": "Universal Travel Adapter",
+    "description": "Compact travel adapter with multiple plug options for international use.",
+    "category": "Electronics Accessories",
+    "price": 24.99,
+    "image_url": "https://example.com/images/traveladapter.jpg",
+    "stock": 85,
+    "rating": 4.4,
+    "brand": "Global Power"
+  },
+  {
+    "id": 17,
+    "name": "Picture Frame - Wooden",
+    "description": "Classic wooden picture frame with a natural finish.",
+    "category": "Home & Decor",
+    "price": 17.5,
+    "image_url": "https://example.com/images/pictureframe.jpg",
+    "stock": 60,
+    "rating": 4.7,
+    "brand": "Memories Framed"
+  },
+  {
+    "id": 18,
+    "name": "Hiking Backpack - 30L",
+    "description": "Lightweight and durable hiking backpack with multiple compartments.",
+    "category": "Bags & Luggage",
+    "price": 64.99,
+    "image_url": "https://example.com/images/hikingbackpack.jpg",
+    "stock": 35,
+    "rating": 4.6,
+    "brand": "Trailblazer"
+  },
+  {
+    "id": 19,
+    "name": "Silicone Baking Mat - Set of 2",
+    "description": "Non-stick silicone baking mats for easy baking and cleaning.",
+    "category": "Home & Kitchen",
+    "price": 11.0,
+    "image_url": "https://example.com/images/bakingmat.jpg",
+    "stock": 110,
+    "rating": 4.9,
+    "brand": "BakeEasy"
+  },
+  {
+    "id": 20,
+    "name": "Women's Leggings - High Waisted",
+    "description": "Comfortable and supportive high-waisted leggings for workout or casual wear.",
+    "category": "Apparel",
+    "price": 32.0,
+    "image_url": "https://example.com/images/leggings.jpg",
+    "stock": 75,
+    "rating": 4.8,
+    "brand": "ActiveLife"
+  }
+]

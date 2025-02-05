@@ -1,0 +1,171 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basket Items</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Link to CSS file -->
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #007bff;
+      color: white;
+      margin: 0;
+    }
+
+    #basket-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    #basket-list li {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 15px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease; /* Animation */
+    }
+
+    #basket-list li:hover {
+      transform: translateY(-5px); /* Hover effect */
+    }
+
+    #basket-list img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    #basket-list h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #007bff;
+    }
+
+    #basket-list p {
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+
+    #basket-list button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    #basket-list button:hover {
+      background-color: #218838;
+    }
+
+    #error-message {
+      color: red;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      #basket-list li {
+        width: 45%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      #basket-list li {
+        width: 90%;
+      }
+    }
+  </style>
+  <body>
+    <h1>Basket Items</h1>
+    <ul id="basket-list"></ul>
+    <div id="error-message" style="color: red"></div>
+    <!-- Add this -->
+    <!-- filepath: ./index.html -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const basketList = document.getElementById("basket-list");
+        const errorMessageDiv = document.getElementById("error-message");
+
+        fetch("./json.json")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            data.forEach((item) => {
+              const li = document.createElement("li");
+              li.classList.add("basket-item"); // Add a class for styling
+
+              const button = document.createElement("button");
+              button.textContent = "Add to Cart";
+              button.onclick = () => addToCart(item, button); // Pass the button to the function
+
+              li.innerHTML = `
+            <img src="${item.image_url}" alt="${item.name}" width="100">
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+            <p>Category: ${item.category}</p>
+            <p>Price: $${item.price}</p>
+            <p>Stock: ${item.stock}</p>
+            <p>Rating: ${item.rating}</p>
+            <p>Brand: ${item.brand}</p>
+          `;
+              li.appendChild(button);
+              basketList.appendChild(li);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching the basket items:", error);
+            errorMessageDiv.textContent =
+              "Failed to load basket items. Please try again later.";
+          });
+      });
+
+      function addToCart(item, button) {
+        button.textContent = "Adding..."; // Change button text
+        button.disabled = true; // Disable the button
+
+        // Simulate adding to cart (replace with actual logic)
+        setTimeout(() => {
+          button.textContent = "Added to Cart!";
+          button.style.backgroundColor = "#6c757d"; // Change color
+          // Optionally, revert after a delay
+          setTimeout(() => {
+            button.textContent = "Add to Cart";
+            button.style.backgroundColor = "#28a745";
+            button.disabled = false;
+          }, 2000);
+        }, 1000);
+
+        console.log(`Added ${item.name} to the cart`);
+      }
+    </script>
+  </body>
+</html>
+```
