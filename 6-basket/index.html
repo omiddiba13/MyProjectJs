@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,166 +5,559 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basket Items</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Link to CSS file -->
-  </head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #007bff;
-      color: white;
-      margin: 0;
-    }
-
-    #basket-list {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-
-    #basket-list li {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      margin: 10px;
-      padding: 15px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease; /* Animation */
-    }
-
-    #basket-list li:hover {
-      transform: translateY(-5px); /* Hover effect */
-    }
-
-    #basket-list img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-    }
-
-    #basket-list h3 {
-      margin-top: 0;
-      font-size: 1.2em;
-      color: #007bff;
-    }
-
-    #basket-list p {
-      margin: 5px 0;
-      font-size: 0.9em;
-    }
-
-    #basket-list button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    #basket-list button:hover {
-      background-color: #218838;
-    }
-
-    #error-message {
-      color: red;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      #basket-list li {
-        width: 45%;
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <style>
+      /* --- Enhanced Base Styles --- */
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        color: #343a40;
       }
-    }
 
-    @media (max-width: 576px) {
+      h1 {
+        text-align: center;
+        padding: 20px 0;
+        background: linear-gradient(135deg, #007bff, #00b4d8);
+        color: white;
+        margin: 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      /* --- Cart Icon Enhancements --- */
+      #cart-icon-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 20px;
+      }
+
+      #cart-icon {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.8em;
+        cursor: pointer;
+        padding: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      #cart-icon:hover {
+        transform: scale(1.15) rotate(-8deg);
+      }
+
+      #cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff4757;
+        color: white;
+        border-radius: 50%;
+        padding: 0.25em 0.6em;
+        font-size:20px;
+        font-weight: bold;
+        display: none;
+        animation: bounce 0.5s ease;
+      }
+
+      /* --- Product List Enhancements --- */
+      #basket-list {
+        list-style: none;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        justify-content: center;
+      }
+
       #basket-list li {
+        background: white;
+        border: 1px solid #e9ecef;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #basket-list li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      #basket-list img {
+        max-width: 100%;
+        height: 200px;
+        object-fit: contain;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      #basket-list li:hover img {
+        transform: scale(1.05);
+      }
+
+      .product-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: #dc3545;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .sold-out .product-overlay {
+        display: flex;
+      }
+
+      /* --- Button Enhancements --- */
+      .ripple {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+      }
+
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+
+      #basket-list button {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        margin-top: 15px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-size: 1em;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      #basket-list button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+      }
+
+      #basket-list button:disabled {
+        background: #6c757d;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .checkmark {
+        width: 18px;
+        height: 18px;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.3s ease;
+      }
+
+      .added .checkmark {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* --- Basket Modal Enhancements --- */
+      .basket-main {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      #basket-content {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        padding: 30px;
         width: 90%;
+        max-width: 600px;
+        position: relative;
+        transform: scale(0.95);
+        animation: scaleUp 0.3s ease forwards;
       }
-    }
-  </style>
+
+      @keyframes scaleUp {
+        to {
+          transform: scale(1);
+        }
+      }
+
+      /* --- Cart Items Enhancements --- */
+      .cart-item-enter {
+        animation: slideIn 0.4s ease;
+      }
+
+      .cart-item-exit {
+        animation: slideOut 0.3s ease forwards;
+      }
+
+      #basket-items-container ul li {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .remove-item {
+        background: #ff6b6b;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .remove-item:hover {
+        background: #ff5252;
+        transform: scale(1.05);
+      }
+
+      /* --- Total Price Section --- */
+      #cart-total {
+        text-align: right;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #eee;
+      }
+
+      /* --- Toast Notification --- */
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #28a745;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+        display: none;
+        animation: slideInToast 0.3s ease forwards;
+      }
+
+      /* --- Animations --- */
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @keyframes slideInToast {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideOut {
+        to {
+          opacity: 0;
+          transform: translateX(50%);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* --- Skeleton Loading --- */
+      .skeleton {
+        animation: skeleton-loading 1s linear infinite alternate;
+        background: #eee;
+        border-radius: 8px;
+      }
+
+      @keyframes skeleton-loading {
+        0% {
+          background-color: #eee;
+        }
+        100% {
+          background-color: #ddd;
+        }
+      }
+
+      .skeleton-text {
+        width: 100%;
+        height: 1em;
+        margin: 8px 0;
+      }
+
+      /* --- Responsive Adjustments --- */
+      @media (max-width: 768px) {
+        #basket-list {
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        #cart-icon {
+          font-size: 1.5em;
+        }
+      }
+    </style>
+  </head>
   <body>
-    <h1>Basket Items</h1>
-    <ul id="basket-list"></ul>
-    <div id="error-message" style="color: red"></div>
-    <!-- Add this -->
-    <!-- filepath: ./index.html -->
+    <h1>
+      Basket Items
+      <div id="cart-icon-container">
+        <button
+          id="cart-icon"
+          onclick="openBasket()"
+          aria-label="View Shopping Cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cart-badge">0</span>
+        </button>
+      </div>
+    </h1>
+
+    <ul id="basket-list">
+      <!-- Skeleton Loaders -->
+      <li class="skeleton" style="height: 400px"></li>
+      <li class="skeleton" style="height: 400px"></li>
+      <li class="skeleton" style="height: 400px"></li>
+    </ul>
+    <div id="error-message"></div>
+    <div class="toast">Item added to cart!</div>
+
+    <div id="basket-modal" class="basket-main">
+      <div id="basket-content">
+        <h2>🛒 Shopping Cart</h2>
+        <button
+          id="close-basket"
+          onclick="closeBasket()"
+          aria-label="Close Cart">
+          ×
+        </button>
+        <div id="basket-items-container">
+          <ul id="basket-items"></ul>
+          <p id="empty-cart-message">
+            <i class="fas fa-cart-arrow-down"></i> Your cart is empty
+          </p>
+        </div>
+        <div id="cart-total">Total: $0.00</div>
+      </div>
+    </div>
+
     <script>
+      let cart = []; // Initialize cart array
+
+      // Create ripple effect on button click
+      function createRipple(event) {
+        const button = event.currentTarget;
+        const ripple = document.createElement("span");
+        ripple.className = "ripple-effect";
+        const rect = button.getBoundingClientRect();
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        button.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      }
+
+      function showToast(message) {
+        const toast = document.querySelector(".toast");
+        toast.textContent = message;
+        toast.style.display = "flex";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 2000);
+      }
+
+      // Modified addToCart function with proper event handling
+      function addToCart(item, button, event) {
+        // Create ripple using the passed event
+        createRipple(event);
+        button.classList.add("added");
+        button.disabled = true;
+
+        setTimeout(() => {
+          const existingItem = cart.find(
+            (cartItem) => cartItem.name === item.name,
+          );
+          if (existingItem) {
+            existingItem.quantity++;
+          } else {
+            cart.push({ ...item, quantity: 1 });
+          }
+
+          saveCart();
+          updateBasketDisplay();
+          showToast(`${item.name} added to cart!`);
+
+          setTimeout(() => {
+            button.classList.remove("added");
+            button.disabled = false;
+          }, 1500);
+        }, 500);
+      }
+
+      // Enhanced updateBasketDisplay
+      function updateBasketDisplay() {
+        const basketItemsList = document.getElementById("basket-items");
+        const emptyCartMessage = document.getElementById("empty-cart-message");
+        const totalElement = document.getElementById("cart-total");
+        const cartBadge = document.getElementById("cart-badge");
+
+        basketItemsList.innerHTML = "";
+        let total = 0;
+        let totalQuantity = 0;
+
+        if (cart.length === 0) {
+          emptyCartMessage.style.display = "block";
+          totalElement.textContent = "Total: $0.00";
+          cartBadge.style.display = "none";
+        } else {
+          emptyCartMessage.style.display = "none";
+          cart.forEach((item) => {
+            total += item.price * item.quantity;
+            totalQuantity += item.quantity;
+            const li = document.createElement("li");
+            li.className = "cart-item-enter";
+            li.innerHTML = `
+              <span>${item.name} - $${item.price.toFixed(2)} x ${
+              item.quantity
+            }</span>
+              <button class="remove-item" onclick="removeItemFromCart('${
+                item.name
+              }')">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            `;
+            basketItemsList.appendChild(li);
+          });
+          totalElement.textContent = `Total: $${total.toFixed(2)}`;
+          cartBadge.textContent = totalQuantity;
+          cartBadge.style.display = "block";
+        }
+      }
+
+      function removeItemFromCart(itemName) {
+        cart = cart.filter((item) => item.name !== itemName);
+        saveCart();
+        updateBasketDisplay();
+        showToast(`${itemName} removed from cart!`);
+      }
+
+      function saveCart() {
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+      }
+
+      function loadCart() {
+        const storedCart = localStorage.getItem("shoppingCart");
+        if (storedCart) {
+          cart = JSON.parse(storedCart);
+          updateBasketDisplay();
+        }
+      }
+
+      function openBasket() {
+        document.getElementById("basket-modal").style.display = "flex";
+      }
+
+      function closeBasket() {
+        document.getElementById("basket-modal").style.display = "none";
+      }
+
+      // Load products on DOMContentLoaded
       document.addEventListener("DOMContentLoaded", function () {
         const basketList = document.getElementById("basket-list");
-        const errorMessageDiv = document.getElementById("error-message");
+        loadCart(); // Load cart on page load
 
         fetch("./json.json")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
+          .then((response) => response.json())
           .then((data) => {
+            basketList.innerHTML = "";
             data.forEach((item) => {
               const li = document.createElement("li");
-              li.classList.add("basket-item"); // Add a class for styling
-
-              const button = document.createElement("button");
-              button.textContent = "Add to Cart";
-              button.onclick = () => addToCart(item, button); // Pass the button to the function
+              if (item.stock === 0) li.classList.add("sold-out");
 
               li.innerHTML = `
-            <img src="${item.image_url}" alt="${item.name}" width="100">
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-            <p>Category: ${item.category}</p>
-            <p>Price: $${item.price}</p>
-            <p>Stock: ${item.stock}</p>
-            <p>Rating: ${item.rating}</p>
-            <p>Brand: ${item.brand}</p>
-          `;
-              li.appendChild(button);
+                ${
+                  item.stock === 0
+                    ? '<div class="product-overlay">Sold Out</div>'
+                    : ""
+                }
+
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <p>Price: $${item.price.toFixed(2)}</p>
+                <button ${item.stock === 0 ? "disabled" : ""}>
+                  ${item.stock === 0 ? "Out of Stock" : "Add to Cart"}
+                  <svg class="checkmark" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                  </svg>
+                </button>
+              `;
+
+              const button = li.querySelector("button");
+              // Attach event listener and pass the click event to addToCart
+              button.addEventListener("click", (e) => {
+                if (item.stock > 0) {
+                  addToCart(item, button, e);
+                }
+              });
               basketList.appendChild(li);
             });
           })
           .catch((error) => {
-            console.error("Error fetching the basket items:", error);
-            errorMessageDiv.textContent =
-              "Failed to load basket items. Please try again later.";
+            console.error("Error:", error);
+            document.getElementById("error-message").textContent =
+              "Failed to load products. Please try again later.";
           });
       });
-
-      function addToCart(item, button) {
-        button.textContent = "Adding..."; // Change button text
-        button.disabled = true; // Disable the button
-
-        // Simulate adding to cart (replace with actual logic)
-        setTimeout(() => {
-          button.textContent = "Added to Cart!";
-          button.style.backgroundColor = "#6c757d"; // Change color
-          // Optionally, revert after a delay
-          setTimeout(() => {
-            button.textContent = "Add to Cart";
-            button.style.backgroundColor = "#28a745";
-            button.disabled = false;
-          }, 2000);
-        }, 1000);
-
-        console.log(`Added ${item.name} to the cart`);
-      }
     </script>
   </body>
 </html>
-```
