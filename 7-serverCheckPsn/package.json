@@ -1,0 +1,17 @@
+{
+  "name": "serverCheck",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "node-notifier": "^10.0.1",
+    "puppeteer-core": "^24.2.0"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/puppeteer-core/.local-chromium/**/*"
+    ]
+  }
+}
