@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors</title>
+    <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Tahoma", sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #fff;
+        text-align: center;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 90%;
+        width: 400px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        color: #ffd700;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 1rem 1.5rem;
+        margin: 0.5rem;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      #result {
+        margin-top: 1.5rem;
+        font-size: 1.2rem;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        color: #fff;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+
+        button {
+          padding: 0.8rem 1rem;
+          font-size: 1rem;
+        }
+
+        #result {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Rock Paper Scissors</h1>
+      <p>Choose one of the options:</p>
+      <button onclick="play('rock')">Rock</button>
+      <button onclick="play('paper')">Paper</button>
+      <button onclick="play('scissors')">Scissors</button>
+      <div id="result">Make your choice!</div>
+    </div>
+
+    <script>
+      // Game rules: Each move beats the weaker move
+      const rules = {
+        rock: "scissors",
+        paper: "rock",
+        scissors: "paper",
+      };
+
+      // Function to randomly select the computer's choice
+      function getComputerChoice() {
+        const choices = ["rock", "paper", "scissors"];
+        const randomIndex = Math.floor(Math.random() * choices.length);
+        return choices[randomIndex];
+      }
+
+      // Function to determine the winner of the game
+      function getWinner(playerChoice, computerChoice) {
+        if (playerChoice === computerChoice) {
+          return "It's a Draw!";
+        }
+        return rules[playerChoice] === computerChoice
+          ? "You Win!"
+          : "Computer Wins!";
+      }
+
+      // Function to play the game
+      function play(playerChoice) {
+        const computerChoice = getComputerChoice();
+        let resultText = "Your Choice: " + playerChoice + "<br>";
+        resultText += "Computer's Choice: " + computerChoice + "<br>";
+        resultText += getWinner(playerChoice, computerChoice);
+
+        // Display the result in the div with id "result"
+        document.getElementById("result").innerHTML = resultText;
+        console.log(resultText);
+      }
+    </script>
+  </body>
+</html>

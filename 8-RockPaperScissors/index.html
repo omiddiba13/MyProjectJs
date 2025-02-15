@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors</title>
+    <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #fff;
+        text-align: center;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 90%;
+        width: 400px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #ffd700;
+      }
+
+      .result {
+        margin-top: 1.5rem;
+      }
+
+      #game-result {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        color: #fff;
+      }
+
+      button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 1rem 1.5rem;
+        margin: 0.5rem;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      button span {
+        margin-left: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        button {
+          padding: 0.8rem 1rem;
+          font-size: 1rem;
+        }
+
+        button span {
+          font-size: 1.2rem;
+        }
+
+        #game-result {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Rock Paper Scissors</h1>
+      <div class="result">
+        <p>
+          <button onclick="play('rock')">
+            (Rock)
+            <span>👊</span>
+          </button>
+          <button onclick="play('paper')">
+            (Paper)
+            <span>✋</span>
+          </button>
+          <button onclick="play('scissors')">
+            (Scissors)
+            <span>✌️</span>
+          </button>
+        </p>
+        <div id="game-result">Choose your move!</div>
+      </div>
+    </div>
+
+    <script>
+      // Function to randomly select the computer's choice
+      function getComputerChoice() {
+        const choices = ["rock", "paper", "scissors"];
+        const randomIndex = Math.floor(Math.random() * choices.length);
+        return choices[randomIndex];
+      }
+
+      // Function to play the game
+      function play(playerChoice) {
+        if (!playerChoice) {
+          console.log("Please choose rock, paper, or scissors.");
+          return; // Prevent further execution of the function
+        }
+
+        const computerChoice = getComputerChoice();
+        console.log("Player Choice: " + playerChoice);
+        console.log("Computer Choice: " + computerChoice);
+
+        let resultMessage = "";
+
+        switch (playerChoice) {
+          case "rock":
+            switch (computerChoice) {
+              case "rock":
+                resultMessage = "It's a Draw!";
+                break;
+              case "paper":
+                resultMessage = "Computer Wins!";
+                break;
+              case "scissors":
+                resultMessage = "Player Wins!";
+                break;
+            }
+            break;
+          case "paper":
+            switch (computerChoice) {
+              case "rock":
+                resultMessage = "Player Wins!";
+                break;
+              case "paper":
+                resultMessage = "It's a Draw!";
+                break;
+              case "scissors":
+                resultMessage = "Computer Wins!";
+                break;
+            }
+            break;
+          case "scissors":
+            switch (computerChoice) {
+              case "rock":
+                resultMessage = "Computer Wins!";
+                break;
+              case "paper":
+                resultMessage = "Player Wins!";
+                break;
+              case "scissors":
+                resultMessage = "It's a Draw!";
+                break;
+            }
+            break;
+          default:
+            resultMessage = "Invalid player choice";
+        }
+
+        // Display the result on the screen
+        document.getElementById("game-result").textContent = resultMessage;
+      }
+
+      play();
+    </script>
+  </body>
+</html>
