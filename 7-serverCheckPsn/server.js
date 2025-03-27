@@ -4,7 +4,7 @@ const notifier = require("node-notifier");
 console.log("✅ The script is running. Please wait...");
 console.log("🔄 The status will be updated every minute.");
 
-// تابع بررسی وضعیت سرور
+
 async function checkServerStatus() {
   try {
     console.log("⏳ Checking server status...");
@@ -21,8 +21,7 @@ async function checkServerStatus() {
       waitUntil: "domcontentloaded",
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 5000)); // تأخیر ۵ ثانیه‌ای
-
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     await page.waitForSelector("#globalStatus");
 
     const status = await page.$eval("#globalStatus .status-text", (el) => {
@@ -49,5 +48,5 @@ async function checkServerStatus() {
   }
 }
 
-// اجرای بررسی وضعیت هر یک دقیقه
+
 setInterval(checkServerStatus, 60000);
